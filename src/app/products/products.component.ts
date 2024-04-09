@@ -13,6 +13,10 @@ export class ProductsComponent implements OnInit {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
+    this.handleGetAllProducts();
+    }
+
+  handleGetAllProducts() {
     this.productService.getAllProducts().subscribe({
       next: (data) => {
         this.products = data;
@@ -22,9 +26,22 @@ export class ProductsComponent implements OnInit {
         console.log(this.errorMessage);
     }
     });
-    }
+  }
 
-  handleDeleteProduct(id: number) {
-    this.productService.deleteProductById(id);
+  handleDeleteProduct(product: Product) {
+    let conf = confirm('Are you sure?');
+    if (!conf) return;
+    this.productService.deleteProduct(product.id).subscribe(
+     {
+      next: (data: boolean) => {
+        let index = this.products.indexOf(product);
+        this.products.splice(index, 1);
+      },
+      error: (error) => {
+        this.errorMessage = error;
+        console.log(this.errorMessage);
+      }
+     }
+    );
   }
 }

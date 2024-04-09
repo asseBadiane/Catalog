@@ -33,7 +33,7 @@ export class ProductService {
     ];
   }
 
-  public getAllProducts(): Observable<Product[]> {
+  public getAllProducts(): Observable<Product[] > {
     let rnd = Math.random();
     // if(rnd > 0.1) {
     //   return throwError('Something bad happened; please try again later.');
@@ -42,11 +42,8 @@ export class ProductService {
     return of(this.products);
   }
 
-  public deleteProductById(id: number): Observable<any> {
-    const index = this.products.findIndex((p) => p.id === id);
-    if (index !== -1) {
-      this.products.splice(index, 1);
-    }
-    return of(null);
+  public deleteProduct(id: number): Observable<boolean> {
+    this.products = this.products.filter((p) => p.id !== id);
+    return of(true) ;
   }
 }
