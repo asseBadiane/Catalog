@@ -33,4 +33,8 @@ export class ProductsComponent implements OnInit {
       },
     ];
   }
+
+  handleDeleteProduct(id: number) {
+    this.products = this.products.filter((product) => product.id !== id);
+  }
 }

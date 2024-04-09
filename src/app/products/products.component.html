@@ -18,7 +18,7 @@
                     <td>{{ product.price }}</td>
                     <td>
                        
-                        <button class="btn btn-danger"> <i class="bi bi-trash"></i></button>
+                        <button (click)="handleDeleteProduct(product.id)" class="btn btn-danger"> <i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
             </tbody>
