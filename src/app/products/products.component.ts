@@ -12,14 +12,18 @@ export class ProductsComponent implements OnInit {
   products!: Product[];
   errorMessage!: string;
   searchFormGroup!: FormGroup;
-
+  currentPage: number = 0;
+  pageSize: number = 5;
+  totalPages: number = 0;
+ 
   constructor(private productService: ProductService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.searchFormGroup = this.formBuilder.group({
       keyword: this.formBuilder.control(''),
     })
-    this.handleGetAllProducts();
+    // this.handleGetAllProducts();
+    this.handleGetPageProducts();
   }
 
   handleGetAllProducts() {
@@ -32,6 +36,24 @@ export class ProductsComponent implements OnInit {
         console.log(this.errorMessage);
       },
     });
+  }
+
+  handleGetPageProducts() {
+    this.productService.getPageProducts(this.currentPage, this.pageSize).subscribe({
+      next: (data) => {
+        this.products = data.products;
+        this.totalPages = data.totalPages;
+      },
+      error: (error) => {
+        this.errorMessage = error;
+        console.log(this.errorMessage);
+      },
+    });
+  }
+
+  goToPage(i: number) {
+    this.currentPage = i;
+    this.handleGetPageProducts();
   }
 
   handleDeleteProduct(product: Product) {
