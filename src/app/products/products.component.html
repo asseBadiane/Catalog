@@ -12,6 +12,8 @@
             <th scope="col">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Price</th>
+            <th scope="col">Promotion</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -19,6 +21,15 @@
             <td>{{ product.id }}</td>
             <td>{{ product.name }}</td>
             <td>{{ product.price }}</td>
+            <td >
+              <i *ngIf="product.promotion" class="bi bi-tags-fill"></i>
+            </td>
+            <td>
+              <button (click)="handleSetPromotion(product)" [ngClass]="product.promotion? 'btn-success' : 'btn-danger'" class="btn">
+                <span *ngIf="product.promotion">Promo Off</span>
+                <span *ngIf="!product.promotion">Promo On</span>
+              </button>
+            </td>
             <td>
               <button
                 (click)="handleDeleteProduct(product)"
