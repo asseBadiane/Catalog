@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-products',
@@ -7,34 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductsComponent implements OnInit {
   products!: any[];
-  constructor() {}
+  errorMessage!: string;
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.products = [
-      {
-        id: 1,
-        name: 'Computer',
-        price: 1300,
+    this.productService.getAllProducts().subscribe({
+      next: (data) => {
+        this.products = data;
       },
-      {
-        id: 2,
-        name: 'Printer',
-        price: 200,
-      },
-      {
-        id: 3,
-        name: 'Laptop',
-        price: 800,
-      },
-      {
-        id: 4,
-        name: 'Mobile',
-        price: 500,
-      },
-    ];
-  }
+      error: (error) => {
+        this.errorMessage = error;
+        console.log(this.errorMessage);
+    }
+    });
+    }
 
   handleDeleteProduct(id: number) {
-    this.products = this.products.filter((product) => product.id !== id);
+    this.productService.deleteProductById(id);
   }
 }
