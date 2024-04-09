@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
+import { Product } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private products!: any[];
+  private products!: Array<Product>;
 
   constructor() {
     this.products = [
@@ -32,7 +33,7 @@ export class ProductService {
     ];
   }
 
-  public getAllProducts(): Observable<any> {
+  public getAllProducts(): Observable<Product[]> {
     let rnd = Math.random();
     // if(rnd > 0.1) {
     //   return throwError('Something bad happened; please try again later.');
