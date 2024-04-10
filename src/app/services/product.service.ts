@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { Product } from '../models/product.model';
+import { PageProduct, Product } from '../models/product.model';
 
 import * as uuid from 'uuid';
 
@@ -69,11 +69,21 @@ export class ProductService {
 
   public getAllProducts(): Observable<Product[]> {
     let rnd = Math.random();
-    // if(rnd > 0.1) {
-    //   return throwError('Something bad happened; please try again later.');
-    // }
-    // else
+    if(rnd > 0.1) {
+      return throwError(() => new Error('Something bad happened; please try again later.'));
+    }
+    else
     return of(this.products);
+  }
+
+  public getPageProducts(page: number, size: number): Observable<PageProduct> {
+    let index = page * size;
+    let totalPages = ~~this.products.length / size;
+    if(this.products.length % size != 0) {
+      totalPages++;
+    }
+    let pageProducts = this.products.slice(index, index + size);
+    return of({products: pageProducts, page: page, size: size, totalPages: totalPages});
   }
 
   public deleteProduct(id: string): Observable<boolean> {
