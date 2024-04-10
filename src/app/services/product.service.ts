@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { Product } from '../models/product.model';
 
+import * as uuid from 'uuid';
+
+let myId = uuid.v4();
+
 @Injectable({
   providedIn: 'root',
 })
@@ -11,33 +15,59 @@ export class ProductService {
   constructor() {
     this.products = [
       {
-        id: 1,
+        id: myId,
         name: 'Computer',
         price: 1300,
         promotion: true,
       },
       {
-        id: 2,
+        id: myId,
         name: 'Printer',
         price: 200,
         promotion: false,
       },
       {
-        id: 3,
+        id: myId,
         name: 'Laptop',
         price: 800,
         promotion: true,
       },
       {
-        id: 4,
+        id: myId,
         name: 'Mobile',
         price: 500,
         promotion: true,
       },
     ];
+    for (let i = 0; i < 10; i++) {
+      this.products.push({
+        id: myId,
+        name: 'Computer' + i,
+        price: 100 + i,
+        promotion: true,
+      });
+      this.products.push({
+        id: myId,
+        name: 'Printer' + i,
+        price: 100 + i,
+        promotion: true,
+      });
+      this.products.push({
+        id: myId,
+        name: 'Laptop' + i,
+        price: 100 + i,
+        promotion: false,
+      });
+      this.products.push({
+        id: myId,
+        name: 'Mobile' + i,
+        price: 100 + i,
+        promotion: true,
+      });
+    }
   }
 
-  public getAllProducts(): Observable<Product[] > {
+  public getAllProducts(): Observable<Product[]> {
     let rnd = Math.random();
     // if(rnd > 0.1) {
     //   return throwError('Something bad happened; please try again later.');
@@ -46,12 +76,12 @@ export class ProductService {
     return of(this.products);
   }
 
-  public deleteProduct(id: number): Observable<boolean> {
+  public deleteProduct(id: string): Observable<boolean> {
     this.products = this.products.filter((p) => p.id !== id);
-    return of(true) ;
+    return of(true);
   }
 
-  public setPromotion(id: number): Observable<boolean> {
+  public setPromotion(id: string): Observable<boolean> {
     let product = this.products.find((p) => p.id === id);
     if (product !== undefined) {
       product.promotion = !product.promotion;
