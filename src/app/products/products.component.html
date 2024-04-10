@@ -6,6 +6,21 @@
   <div class="card" *ngIf="products; else errors">
     <div class="card-header">Products List</div>
     <div class="card-body">
+      <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchProducts()">
+        <div class="input-group mb-3">
+          <input
+            formControlName="keyword"
+            type="text"
+            class="form-control"
+            placeholder="Search..."
+            aria-label="Search..."
+            aria-describedby="basic-addon2"
+          />
+          <button class="input-group-text btn btn-outline-secondary" id="basic-addon2"
+            ><i class="bi bi-search"></i
+          ></button>
+        </div>
+      </form>
       <table class="table">
         <thead>
           <tr>

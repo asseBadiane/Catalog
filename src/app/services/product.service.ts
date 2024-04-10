@@ -60,4 +60,9 @@ export class ProductService {
       return throwError(() => new Error('Product not found'));
     }
   }
+
+  public searchProducts(keyword: string): Observable<Product[]> {
+    let products = this.products.filter((p) => p.name.includes(keyword));
+    return of(products);
+  }
 }
