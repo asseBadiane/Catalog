@@ -3,6 +3,7 @@
    <div class="col-md-6 offset-md-3">
     <div class="card">
         <div class="card-header">Authentication</div>
+        <div class="alert alert-danger text-center mb-3 mt-3" *ngIf="errorMessage"> {{ errorMessage }}</div>
         <div class="card-body">
            <form [formGroup]="userFormGroup" (ngSubmit)="handleLogin()">
                 <div class="mb-3">
