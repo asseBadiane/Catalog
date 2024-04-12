@@ -101,8 +101,14 @@ export class ProductService {
     }
   }
 
-  public searchProducts(keyword: string): Observable<Product[]> {
-    let products = this.products.filter((p) => p.name.includes(keyword));
-    return of(products);
+  public searchProducts(keyword: string, page: number, size: number): Observable<PageProduct> {
+    let result = this.products.filter((p) => p.name.includes(keyword));
+    let index = page * size;
+    let totalPages = ~~result.length / size;
+    if(this.products.length % size != 0) {
+      totalPages++;
+    }
+    let pageProducts = result.slice(index, index + size);
+    return of({products: pageProducts, page: page, size: size, totalPages: totalPages});
   }
 }
