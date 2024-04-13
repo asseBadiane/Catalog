@@ -39,13 +39,13 @@
             <td >
               <i *ngIf="product.promotion" class="bi bi-tags-fill"></i>
             </td>
-            <td>
+            <td *ngIf="authService.hasRole('ADMIN')">
               <button (click)="handleSetPromotion(product)" [ngClass]="product.promotion? 'btn-success' : 'btn-danger'" class="btn">
                 <span *ngIf="product.promotion">Promo Off</span>
                 <span *ngIf="!product.promotion">Promo On</span>
               </button>
             </td>
-            <td>
+            <td *ngIf="authService.hasRole('ADMIN')">
               <button
                 (click)="handleDeleteProduct(product)"
                 class="btn btn-danger"
