@@ -13,7 +13,7 @@ let myId = uuid.v4();
 export class AuthenticationService {
 
   users: User[] = [];
-  authenticated!: User;
+  authenticated: User | undefined;
 
   constructor() {
     this.users.push({userId: myId, username: 'admin', password: 'admin', roles: ['USER', 'ADMIN']});
@@ -45,12 +45,17 @@ export class AuthenticationService {
 
   // function to check if user has a role 
   public hasRole(role: string): boolean {
-    return this.authenticated.roles.includes(role);
+    return this.authenticated!.roles.includes(role);
   }
 
   // function to check if user is authenticated
   public isAuthenticated(): boolean {
     return this.authenticated != undefined;
+  }
+  public logout(): Observable<boolean> {
+    this.authenticated = undefined;
+    localStorage.removeItem('authUser');
+    return of(true);
   }
 }
 
