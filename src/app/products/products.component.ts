@@ -3,6 +3,7 @@ import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -10,6 +11,7 @@ import { AuthenticationService } from '../services/authentication.service';
   styleUrl: './products.component.css',
 })
 export class ProductsComponent implements OnInit {
+
   products!: Product[];
   errorMessage!: string;
   searchFormGroup!: FormGroup;
@@ -18,7 +20,7 @@ export class ProductsComponent implements OnInit {
   totalPages: number = 0;
   currentAction: string = 'all';
  
-  constructor(private productService: ProductService, private formBuilder: FormBuilder, public authService: AuthenticationService) {}
+  constructor(private productService: ProductService, private formBuilder: FormBuilder, public authService: AuthenticationService, private router: Router) {}
 
   ngOnInit(): void {
     this.searchFormGroup = this.formBuilder.group({
@@ -62,6 +64,10 @@ export class ProductsComponent implements OnInit {
       this.handleSearchProducts();
     } 
   }
+
+  handleNewProduct() {
+    this.router.navigateByUrl("/admin/newProduct")
+    }
 
   handleDeleteProduct(product: Product) {
     let conf = confirm('Are you sure?');
