@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { AdminTemplateComponent } from './admin-template/admin-template.component';
 import { authGuard } from './guards/authentication.guard';
 import { NewProductComponent } from './new-product/new-product.component';
+import { EditProductComponent } from './edit-product/edit-product.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: 'products', component: ProductsComponent },
       { path: 'customers', component: CustomersComponent },
       { path: 'newProduct', component: NewProductComponent },
+      { path: 'editProduct/:id', component: EditProductComponent },
     ],
   },
 ];
