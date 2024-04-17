@@ -17,14 +17,30 @@ export class NewProductComponent implements OnInit {
     this.productFormGroup = this.formBuilder.group({
       name: this.formBuilder.control('', [Validators.required, Validators.minLength(4)]),
       price: this.formBuilder.control(0, [Validators.required, Validators.min(200)]),
-      promotion: this.formBuilder.control(false, [Validators.required]),
+      // promotion: this.formBuilder.control(false, [Validators.required]),
+      description: this.formBuilder.control('', [Validators.required, Validators.minLength(10)]),
     });
   }
 
-  handleCreateProduct() {
+  // handleCreateProduct() {
+  //   let product = this.productFormGroup.value;
+  //   this.prductService.addNewProduct(product).subscribe({
+  //     next: (data) => {
+  //       console.log(data);
+  //       alert('Product created successfully');
+  //       this.productFormGroup.reset();
+  //     },
+  //     error: (err) => {
+  //       console.log(err);
+  //     }
+  //   })
+  // }
+
+  handleCreateProduct_2() {
     let product = this.productFormGroup.value;
-    this.prductService.addNewProduct(product).subscribe({
+    this.prductService.addNewProduct_2(product).subscribe({
       next: (data) => {
+        console.log(data);
         alert('Product created successfully');
         this.productFormGroup.reset();
       },

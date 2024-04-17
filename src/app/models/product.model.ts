@@ -6,6 +6,14 @@ export interface Product {
     promotion: boolean;
 }
 
+
+export interface Product_2 {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+}
+
 export interface PageProduct {
     products: Product[];
     page: number;

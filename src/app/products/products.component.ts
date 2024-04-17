@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
-import { Product } from '../models/product.model';
+import { Product, Product_2 } from '../models/product.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class ProductsComponent implements OnInit {
 
   products!: Product[];
+  products_2!: Product_2[];
   errorMessage!: string;
   searchFormGroup!: FormGroup;
   currentPage: number = 0;
@@ -28,12 +29,26 @@ export class ProductsComponent implements OnInit {
     })
     // this.handleGetAllProducts();
     this.handleGetPageProducts();
+    this.handleGetAllProducts2();
   }
 
   handleGetAllProducts() {
     this.productService.getAllProducts().subscribe({
       next: (data) => {
         this.products = data;
+      },
+      error: (error) => {
+        this.errorMessage = error;
+        console.log(this.errorMessage);
+      },
+    });
+  }
+
+  handleGetAllProducts2() {
+    this.productService.getAllProducts2().subscribe({
+      next: (data) => {
+        this.products_2 = data;
+        console.log('Data', this.products_2);
       },
       error: (error) => {
         this.errorMessage = error;

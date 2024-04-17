@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { PageProduct, Product } from '../models/product.model';
+import { PageProduct, Product, Product_2 } from '../models/product.model';
 
 import * as uuid from 'uuid';
+import { HttpClient } from '@angular/common/http';
 
 let myId = uuid.v4();
 
@@ -11,8 +12,12 @@ let myId = uuid.v4();
 })
 export class ProductService {
   private products!: Array<Product>;
+  // private products_2!: Array<Product_2>;
+  apiUrl = 'http://localhost:3000/';
+  enpdoint = 'products';
+  url = this.apiUrl + this.enpdoint;
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     this.products = [
       {
         id: myId,
@@ -74,6 +79,18 @@ export class ProductService {
     }
     else
     return of(this.products);
+  }
+
+  // Get all products
+  public getAllProducts2(): Observable<Product_2[]>{
+    return this.httpClient.get<Product_2[]>(this.url);
+    
+  }
+
+  // Create product
+  public addNewProduct_2(product: Product_2): Observable<Product_2> {
+    return this.httpClient.post<Product_2>(this.url, product);
+
   }
 
   public getPageProducts(page: number, size: number): Observable<PageProduct> {
