@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { PageProduct, Product, Product_2 } from '../models/product.model';
+import { Observable, of, switchMap, tap, throwError } from 'rxjs';
+import { PageProduct, Product } from '../models/product.model';
 
 import * as uuid from 'uuid';
 import { HttpClient } from '@angular/common/http';
@@ -11,96 +11,40 @@ let myId = uuid.v4();
   providedIn: 'root',
 })
 export class ProductService {
-  private products!: Array<Product>;
+  private products!: Product[];
   // private products_2!: Array<Product_2>;
   apiUrl = 'http://localhost:3000/';
   enpdoint = 'products';
   url = this.apiUrl + this.enpdoint;
 
-  constructor(private httpClient: HttpClient) {
-    this.products = [
-      {
-        id: myId,
-        name: 'Computer',
-        price: 1300,
-        promotion: true,
-      },
-      {
-        id: myId,
-        name: 'Printer',
-        price: 200,
-        promotion: false,
-      },
-      {
-        id: myId,
-        name: 'Laptop',
-        price: 800,
-        promotion: true,
-      },
-      {
-        id: myId,
-        name: 'Mobile',
-        price: 500,
-        promotion: true,
-      },
-    ];
-    for (let i = 0; i < 10; i++) {
-      this.products.push({
-        id: myId,
-        name: 'Computer' + i,
-        price: 100 + i,
-        promotion: true,
-      });
-      this.products.push({
-        id: myId,
-        name: 'Printer' + i,
-        price: 100 + i,
-        promotion: true,
-      });
-      this.products.push({
-        id: myId,
-        name: 'Laptop' + i,
-        price: 100 + i,
-        promotion: false,
-      });
-      this.products.push({
-        id: myId,
-        name: 'Mobile' + i,
-        price: 100 + i,
-        promotion: true,
-      });
-    }
-  }
+  constructor(private httpClient: HttpClient) {}
 
   public getAllProducts(): Observable<Product[]> {
-    let rnd = Math.random();
-    if(rnd > 0.1) {
-      return throwError(() => new Error('Something bad happened; please try again later.'));
-    }
-    else
-    return of(this.products);
-  }
-
-  // Get all products
-  public getAllProducts2(): Observable<Product_2[]>{
-    return this.httpClient.get<Product_2[]>(this.url);
-    
+    return this.httpClient.get<Product[]>(this.url);
   }
 
   // Create product
-  public addNewProduct_2(product: Product_2): Observable<Product_2> {
-    return this.httpClient.post<Product_2>(this.url, product);
-
+  public addNewProduct(product: Product): Observable<Product> {
+    return this.httpClient.post<Product>(this.url, product);
   }
 
   public getPageProducts(page: number, size: number): Observable<PageProduct> {
-    let index = page * size;
-    let totalPages = ~~this.products.length / size;
-    if(this.products.length % size != 0) {
-      totalPages++;
-    }
-    let pageProducts = this.products.slice(index, index + size);
-    return of({products: pageProducts, page: page, size: size, totalPages: totalPages});
+    return this.getAllProducts().pipe(
+      switchMap((products) => {
+        let index = page * size;
+        let totalPages = ~~products.length / size;
+        if (products.length % size != 0) {
+          totalPages++;
+        }
+        let pageProducts = products.slice(index, index + size);
+        return of({
+          products: pageProducts,
+          page: page,
+          size: size,
+          totalPages: totalPages,
+        });
+      })
+    );
   }
 
   public deleteProduct(id: string): Observable<boolean> {
@@ -118,20 +62,23 @@ export class ProductService {
     }
   }
 
-  public searchProducts(keyword: string, page: number, size: number): Observable<PageProduct> {
+  public searchProducts(
+    keyword: string,
+    page: number,
+    size: number
+  ): Observable<PageProduct> {
     let result = this.products.filter((p) => p.name.includes(keyword));
     let index = page * size;
     let totalPages = ~~result.length / size;
-    if(this.products.length % size != 0) {
+    if (this.products.length % size != 0) {
       totalPages++;
     }
     let pageProducts = result.slice(index, index + size);
-    return of({products: pageProducts, page: page, size: size, totalPages: totalPages});
-  }
-
-  public addNewProduct(product: Product): Observable<Product> {
-    product.id = myId;
-    this.products.push(product);
-    return of(product);
+    return of({
+      products: pageProducts,
+      page: page,
+      size: size,
+      totalPages: totalPages,
+    });
   }
 }

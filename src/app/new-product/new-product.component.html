@@ -1,41 +1,88 @@
 <div class="container mt-3 col-md-6 offset-md-3">
-    <div class="card">
-        <div class="card-header">New Product</div>
-        <div class="card-body">
-            <form [formGroup]="productFormGroup" (ngSubmit)="handleCreateProduct_2()">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" formControlName="name">
-                    <small >
-                        <span class="text-danger" *ngIf="productFormGroup.controls['name'].errors && productFormGroup.controls['name'].touched ">
-                            {{ getErrorMessage('name', productFormGroup.controls['name'].errors) }}
-                        </span>
-                    </small>
-                </div>
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <input type="text" class="form-control" formControlName="description">
-                    <small >
-                        <span class="text-danger" *ngIf="productFormGroup.controls['description'].errors && productFormGroup.controls['description'].touched ">
-                            {{ getErrorMessage('description', productFormGroup.controls['description'].errors) }}
-                        </span>
-                    </small>
-                </div>
-                <div class="mb-3">
-                    <label for="price" class="form-label">Price</label>
-                    <input type="number" class="form-control" formControlName="price">
-                    <small >
-                        <span class="text-danger" *ngIf="productFormGroup.controls['price'].errors && productFormGroup.controls['price'].touched ">
-                            {{ getErrorMessage('price', productFormGroup.controls['price'].errors) }}
-                        </span>
-                    </small>
-                </div>
-                <!-- <div class="mb-3">
-                    <label for="promotion" class="form-label">Promotion</label>
-                    <input type="checkbox" class="form-check-input" formControlName="promotion">
-                </div> -->
-                <button [disabled]="productFormGroup.invalid" type="submit" class="btn btn-primary">Save</button>
-            </form>
+  <div class="card">
+    <div class="card-header">New Product</div>
+    <div class="card-body">
+      <form [formGroup]="productFormGroup" (ngSubmit)="handleCreateProduct()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" formControlName="name" />
+          <small>
+            <span
+              class="text-danger"
+              *ngIf="
+                productFormGroup.controls['name'].errors &&
+                productFormGroup.controls['name'].touched
+              "
+            >
+              {{
+                getErrorMessage(
+                  "name",
+                  productFormGroup.controls["name"].errors
+                )
+              }}
+            </span>
+          </small>
         </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="description"
+          />
+          <small>
+            <span
+              class="text-danger"
+              *ngIf="
+                productFormGroup.controls['description'].errors &&
+                productFormGroup.controls['description'].touched
+              "
+            >
+              {{
+                getErrorMessage(
+                  "description",
+                  productFormGroup.controls["description"].errors
+                )
+              }}
+            </span>
+          </small>
+        </div>
+        <div class="mb-3">
+          <label for="price" class="form-label">Price</label>
+          <input type="number" class="form-control" formControlName="price" />
+          <small>
+            <span
+              class="text-danger"
+              *ngIf="
+                productFormGroup.controls['price'].errors &&
+                productFormGroup.controls['price'].touched
+              "
+            >
+              {{
+                getErrorMessage(
+                  "price",
+                  productFormGroup.controls["price"].errors
+                )
+              }}
+            </span>
+          </small>
+        </div>
+        <div class="mb-3">
+          <label for="promotion" class="form-label">Promotion</label>
+          <input
+            type="checkbox"
+            class="form-check-input"
+            formControlName="promotion"
+          />
+        </div>
+        <button
+          [disabled]="productFormGroup.invalid"
+          type="submit"
+          class="btn btn-primary"
+        >
+          Save
+        </button>
+      </form>
     </div>
+  </div>
 </div>
