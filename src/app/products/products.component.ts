@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
   styleUrl: './products.component.css',
 })
 export class ProductsComponent implements OnInit {
-
   products!: Product[];
   errorMessage!: string;
   searchFormGroup!: FormGroup;
@@ -19,14 +18,19 @@ export class ProductsComponent implements OnInit {
   pageSize: number = 5;
   totalPages: number = 0;
   currentAction: string = 'all';
- 
-  constructor(private productService: ProductService, private formBuilder: FormBuilder, public authService: AuthenticationService, private router: Router) {}
+
+  constructor(
+    private productService: ProductService,
+    private formBuilder: FormBuilder,
+    public authService: AuthenticationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.searchFormGroup = this.formBuilder.group({
       keyword: this.formBuilder.control(''),
-    })
-    // this.handleGetAllProducts();
+    });
+    this.handleGetAllProducts();
     this.handleGetPageProducts();
   }
 
@@ -34,6 +38,7 @@ export class ProductsComponent implements OnInit {
     this.productService.getAllProducts().subscribe({
       next: (data) => {
         this.products = data;
+        console.log('Data', this.products);
       },
       error: (error) => {
         this.errorMessage = error;
@@ -43,36 +48,38 @@ export class ProductsComponent implements OnInit {
   }
 
   handleGetPageProducts() {
-    this.productService.getPageProducts(this.currentPage, this.pageSize).subscribe({
-      next: (data) => {
-        this.products = data.products;
-        this.totalPages = data.totalPages;
-      },
-      error: (error) => {
-        this.errorMessage = error;
-        console.log(this.errorMessage);
-      },
-    });
+    this.productService
+      .getPageProducts(this.currentPage, this.pageSize)
+      .subscribe({
+        next: (data) => {
+          this.products = data.products;
+          this.totalPages = data.totalPages;
+        },
+        error: (error) => {
+          this.errorMessage = error;
+          console.log(this.errorMessage);
+        },
+      });
   }
 
   goToPage(i: number) {
     this.currentPage = i;
     if (this.currentAction == 'all') {
       this.handleGetPageProducts();
-    }
-    else {
+    } else {
       this.handleSearchProducts();
-    } 
+    }
   }
 
   handleNewProduct() {
     this.router.navigateByUrl("/admin/newProduct")
     }
   
+ 
+
   handleEditProduct(product: Product) {
-    this.router.navigateByUrl("/admin/editProduct/"+product.id)
-    }
-      
+    this.router.navigateByUrl('/admin/editProduct/' + product.id);
+  }
 
   handleDeleteProduct(product: Product) {
     let conf = confirm('Are you sure?');
@@ -102,19 +109,21 @@ export class ProductsComponent implements OnInit {
     });
   }
 
-  handleSearchProducts() { 
+  handleSearchProducts() {
     this.currentAction = 'search';
     this.currentPage = 0;
     let keyword = this.searchFormGroup.value.keyword;
-    this.productService.searchProducts(keyword, this.currentPage, this.pageSize).subscribe({
-      next: (data) => {
-        this.products = data.products;
-        this.totalPages = data.totalPages;
-      },
-      error: (error) => {
-        this.errorMessage = error;
-        console.log(this.errorMessage);
-      },
-    });
+    this.productService
+      .searchProducts(keyword, this.currentPage, this.pageSize)
+      .subscribe({
+        next: (data) => {
+          this.products = data.products;
+          this.totalPages = data.totalPages;
+        },
+        error: (error) => {
+          this.errorMessage = error;
+          console.log(this.errorMessage);
+        },
+      });
   }
 }
