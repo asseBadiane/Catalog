@@ -15,10 +15,7 @@ import { ProductService } from '../services/product.service';
 export class NewProductComponent implements OnInit {
   productFormGroup!: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private prductService: ProductService
-  ) {}
+  constructor(private formBuilder: FormBuilder, public prductService: ProductService) { }
 
   ngOnInit(): void {
     this.productFormGroup = this.formBuilder.group({
@@ -51,6 +48,8 @@ export class NewProductComponent implements OnInit {
       },
     });
   }
+  
+  
 
   getErrorMessage(fieldName: string, error: ValidationErrors) {
     if (error['required']) {

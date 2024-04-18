@@ -3,6 +3,7 @@ import { Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { PageProduct, Product } from '../models/product.model';
 
 import * as uuid from 'uuid';
+import { ValidationErrors } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 let myId = uuid.v4();
@@ -81,4 +82,31 @@ export class ProductService {
       totalPages: totalPages,
     });
   }
+
+  public getProductById(id: string): Observable<Product> {
+    let product = this.products.find((p) => p.id === id);
+    if (product === undefined) return throwError(() => new Error("Product not found"));
+    return of(product);
+  }
+
+  public updateProduct(product: Product): Observable<Product> {
+    let index = this.products.findIndex((p) => p.id === product.id);
+    if (index === -1) return throwError(() => new Error("Product not found"));
+    this.products[index] = product;
+    return of(product);
+  }
+
+  getErrorMessage(fieldName: string, error: ValidationErrors) {
+    if (error['required']) {
+        return fieldName + ' is required';
+    }
+    else if (error['minlength']) {
+        return fieldName + ' should have at least ' + error['minlength']['requiredLength'] + ' characters';
+    }
+    else if (error['min']) {
+        return fieldName + ' should have min value ' + error['min']['min'];
+    } 
+    else return '';
+    
+}
 }
